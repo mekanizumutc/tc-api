@@ -124,6 +124,7 @@ function CodeRandom(coderId) {
  */
 function getCode(coderId) {
     var r = new CodeRandom(coderId);
+
     var nextBytes = function(bytes) {
         for (var i = 0, len = bytes.length; i < len;)
             for (var rnd = r.nextInt(), n = Math.min(len - i, 4); n-- > 0; rnd >>= 8) {
@@ -185,7 +186,7 @@ var registerUser = function (user, api, dbConnectionMap, next) {
                 function (callback) {
                     var status = user.socialProviderId !== null && user.socialProviderId !== undefined ? 'A' : 'U';
                     // use user id as activation code for now
-                    activationCode = getCode(user.id.toString());
+                    activationCode = getCode(user.id);
                     api.dataAccess.executeUpdate("insert_user", {userId : user.id, firstName : user.firstName, lastName : user.lastName, handle : user.handle, status : status, activationCode : activationCode, regSource : 'api'}, dbConnectionMap, function (err, result) {
                         callback(err, result);
                     });
